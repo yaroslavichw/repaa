@@ -1,30 +1,12 @@
 ### [Вернуться на Главную](/README.md)
 
-## Docker
+## Получить Docker
 
 ### Структура документа
 
-- [Знакомство. Получить и запустить Docker](#получить-docker)
-- [Быстрый старт](#быстрый-старт)
-  - [Hello, World](#hello-world)
-    - [Управление контейнером и образом, базовые команды](#управление-контейнером-и-образом-базовые-команды)
-    - [Установка и запуск из готового образа Nginx](#установка-и-запуск-из-готового-образа-nginx)
-    - [Готовые образы](/content/Docker/ImageLibrary/README.md)
-    - Полезные команды
-- Dockerfile
-- Docket Compose
-
-### Структура проекта
-  - [Готовые образы](/content/Docker/ImageLibrary/README.md)
-  - [Dockerfile](/content/Docker/DockerFile/README.md)
-  - [Docket Compose](/content/Docker/DockerCompose)
-  - []()
-
-### Получить Docker
-
 - **Windows**
     - Включить подситему Windows для Linux (WSL 2.0).
-    - [Загрузить и установить **Docker-Desktop**](https://www.docker.com/products/docker-desktop/)
+    - [Загрузить и установить **Docker-Desktop**](https://www.docker.com/products/docker-desktop/) или в **PowerShell** - `winget install Docker.DockerDesktop`
     - Выполнять авторизацию в **Docker-Desktop** (можно через Google), указать personal или *Skip*;
     - Перезагрузить компьютер;
     - Запустить **Docker Desktop** (можно добавить в автозагрузку для удобства);
@@ -44,6 +26,7 @@
     > Важно: Docker Desktop использует виртуализацию и требует, чтобы на вашем **Mac** был включен фреймворк **HyperKit**. Приложение автоматически настраивает все необходимые компоненты.
 
 - **Linux**
+    - [Требования к обородуванию и ОС](https://docs.docker.com/desktop/setup/install/linux/)
     - **Ubuntu**
         - `sudo apt update sudo apt install ca-certificates curl gnupg lsb-release -y`
         - `sudo mkdir -p /etc/apt/keyrings curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg`
@@ -77,7 +60,7 @@ docker version
 
 **Docker образ** (Docker image) - это файлы, типа .iso
 
-Docker image - образ, который содержит всё необходимое для запуска приложения: код, библиотеки, зависимости, системные иснтрументы и конфигурации. Образ неизменяем. Если надо что-то поменять, то приходится создавать новый образ
+**Docker image** - образ, который содержит всё необходимое для запуска приложения: код, библиотеки, зависимости, системные иснтрументы и конфигурации. Образ неизменяем. Если надо что-то поменять, то приходится создавать новый образ
 
 **Docker контейнер** - это изолированный процесс. Можно свободно создавать, запускать, останавливать и удалять контейнеры. Каждый контейнер изолирован от других и от основной системы. Контейнер подобен виртуальной машине. Внутри каждого контейнера кипит своя жизнь.
 
@@ -104,12 +87,22 @@ docker ps
 docker ps -a
 ```
 
+Подробная информация о контейнере
+```shell
+docker inspect hello-world
+```
+
+Показать все имеющиеся Docker-образы
+```shell
+docker images
+```
+
 Показать детальную информацию по выбранному образу
 ```shell
 docker image inspect hello-world
 ```
 
-Удалить контейнер
+Командой `docker ps` получить id или имя контейнера, затем удалить указанный контейнер
 ```shell
 docker rm 6f72bfc0ed02
 ```
@@ -432,6 +425,7 @@ docker rm $(docker ps -aq)
 
 #### Контейнеры
 
+Удалить только остановленные контейнеры
 ```shell
 docker container prune
 ```
@@ -467,13 +461,15 @@ docker stop $(docker ps -q)
 docker image prune
 ```
 
-Удалить все неиспользуемые образы (те, на которые нет ссылок)
-```shell
-docker image prune
-```
 С подтверждением перед удалением
 ```shell
 docker image prune -a
 ```
 
 > На вопрос "Are you sure you want to continue?" ответьте 'y'
+
+
+Удалить все образы
+```shell
+docker rmi -f $(docker images -q)
+```
