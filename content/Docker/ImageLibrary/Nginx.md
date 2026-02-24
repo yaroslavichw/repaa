@@ -61,6 +61,11 @@ docker rmi $(docker images -q)
 
 ### Получение готового образа Nginx
 
+1. Поиск и получение готового образа на Docker Hub
+1. Создание и запуск контейнера из полученного образа
+1. Проверка состояния приложения из Docker-контейнера
+1. Управление контейнером
+
 Найти нужный образ на **Docker Hub**
 ```shell
 docker search nginx
@@ -68,7 +73,7 @@ docker search nginx
 
 ![Скрин вывода поиска по слову nginx](img/docker_screen.png)
 
-Получить, установить и запустить Nginx
+Получить, создать и запустить Nginx
 ```shell
 docker run -d --name my-nginx -p 80:80 nginx
 ```
@@ -78,9 +83,21 @@ docker run -d --name my-nginx -p 80:80 nginx
 docker ps -a
 ```
 
+![Тут нужен скриншот]()
+
 Показать загруженный на ваш компьютер образ
 ```shell
 docker images
+```
+
+Если нужно только получить готовый образ, без создания и запуска контейнера, то
+```shell
+docker pull nginx
+```
+
+Получить информацию по загруженному образу:
+```shell
+docker inspect nginx
 ```
 
 При необходимости остановить контейнер с таким именем:
@@ -119,7 +136,7 @@ docker rmi 062a783918fb
 
 ### Проверить работу контейнера
 
-Можно снова установить и запустить Nginx
+Можно снова установить и запустить Nginx (если его удаляли ранее)
 ```shell
 docker run -d --name my-nginx -p 80:80 nginx
 ```
@@ -178,7 +195,7 @@ docker stats
 ![](img/2_stats.png)
 
 
-> Выйти из мониторинга контейнеров можно по `Ctrl-C`
+> Выйти из мониторинга контейнеров можно по `Ctrl+C`
 
 Получить лог контейнера
 ```shell
@@ -189,7 +206,7 @@ docker logs my-nginx
 ```shell
 docker logs -f my-nginx
 ```
-> Выйти из логов в режиме ожидания можно по `Ctrl-C`
+> Выйти из логов в режиме ожидания можно по `Ctrl+C`
 
 ![](img/logs.png)
 
@@ -253,7 +270,7 @@ fastfetch
 
 Можно установить ещё несколько приложений внутри Docker-контейнера:
 ```shell
-apt update && apt install -y htop cmatrix hollywood mc micro
+apt update && apt install -y fastfetch htop cmatrix hollywood mc micro
 ```
 > На все вопросы ответьте `1` и `Enter`
 

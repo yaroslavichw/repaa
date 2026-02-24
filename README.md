@@ -92,13 +92,13 @@ git config --global user.email "rosa@mail.ru"
 
 1. В BIOS **VTx** или **AMD-V** - `enable` (Advanced configuration CPU)
 
-#### Основные этапы настройки и устновки WSL 2.0
+#### Основные этапы настройки и установки WSL 2.0
 
 1. Включение дополнения "Подсистема Windows для Linux"
     - Выполнить `Win + R`, в диалоговом окне ввести `appwiz.cpl` и нажать **Enter**.
     - Программы и компоненты -> Включение и отключение дополнительных компонентов Windows -> поставить флажок в *Подсистема Windows для Linux*
     - Или выполните в **Windows PowerShell** (Администратор) команду: `Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform`
-    - Перезагрузить компьютер можно командой ``
+    - Перезагрузить компьютер в PowerShell командой `Restart-Computer`
     - Запустить **Windows PowerShell** (Администратор)
     - Проверка подсистемы **WSL 2.0** командой `wsl --version` и `wsl --status`
     - Обновить **WSL 2.0** командой `wsl --update`
