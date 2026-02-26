@@ -30,15 +30,31 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "-> Тянем изменения из $RemoteName/$BranchName..." -ForegroundColor Yellow
 git pull $RemoteName $BranchName
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Ошибка при git pull. Возможно, конфликты. Скрипт остановлен." -ForegroundColor Red
+    Write-Host "Ошибка при git pull. Скрипт остановлен." -ForegroundColor Red
     exit 1
 }
 
 # 4. Копирование содержимого (кроме .git) во второй репозиторий
 Write-Host "-> Копирование файлов в $DestRepo..." -ForegroundColor Yellow
-# Получаем все элементы в корне, кроме .git, и копируем их с перезаписью (-Force)
 Get-ChildItem -Path $SourceRepo | Where-Object { $_.Name -ne '.git' } | ForEach-Object {
     Copy-Item -Path $_.FullName -Destination $DestRepo -Recurse -Force
+}
+
+# 5. Отправка изменений второго репозитория на сервер (Push)
+Write-Host "-> Фиксация и отправка изменений (Push) из целевого репозитория..." -ForegroundColor Yellow
+Set-Location -Path $DestRepo
+git add .
+$diff = git status --porcelain
+if ($diff) {
+    git commit -m "Автоматическая синхронизация: обновление файлов из исходного репозитория"
+    git push
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Успешный push в целевом репозитории!" -ForegroundColor Green
+    } else {
+        Write-Host "Ошибка при выполнении git push." -ForegroundColor Red
+    }
+} else {
+    Write-Host "Нет новых изменений для отправки (push)." -ForegroundColor Cyan
 }
 
 Write-Host "=== Синхронизация успешно завершена ===" -ForegroundColor Green
